@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from "react";
-import { InfoIcon } from "../icons";
+import { InfoIcon } from "../../components/icons";
 import { Country, State, City } from "country-state-city";
 import { WeatherContext } from "../../contexts/WeatherContext";
 import { useNavigate } from "react-router-dom";

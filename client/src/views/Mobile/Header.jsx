@@ -1,4 +1,4 @@
-import Search from "../../views/Search";
+import Search from "../Search";
 
 import { Menu as ModalMenu } from "../../components/Modals/Menu";
 
