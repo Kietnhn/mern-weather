@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import SaveButton from "../../components/SaveButton";
 import { Theme } from "../../components/Theme";
 import { WeatherContext } from "../../contexts/WeatherContext";
-import { Navigation } from "../../views";
+import Navigation from "../../views/Mobile/Navigation";
 import Header from "../../views/Mobile/Header";
 const MobileLayout = ({ children }) => {
     const {

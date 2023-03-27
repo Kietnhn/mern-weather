@@ -5,6 +5,8 @@ import authRouter from "./routes/auth.js";
 import cityRouter from "./routes/city.js";
 import weatherRouter from "./routes/weather.js";
 import positionRouter from "./routes/position.js";
+import airRouter from "./routes/air.js";
+import sunRouter from "./routes/sun.js";
 
 import cors from "cors";
 
@@ -31,6 +33,8 @@ app.use("/api/auth", authRouter);
 app.use("/api/cities", cityRouter);
 app.use("/api/weather", weatherRouter);
 app.use("/api/position", positionRouter);
+app.use("/api/air", airRouter);
+app.use("/api/sun", sunRouter);
 
 const PORT = 5000;
 

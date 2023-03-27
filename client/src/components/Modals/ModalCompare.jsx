@@ -1,7 +1,7 @@
 import React from "react";
 import CitiesWeather from "../CitiesWeather";
 import DetailsInfo from "../Desktop/DetailsInfo";
-import Hourly from "../Desktop/Hourly";
+import CompareChart from "../Chart/CompareChart";
 import Compare from "../../components/Desktop/Compare";
 const ModalCompare = ({
     weather,
@@ -42,7 +42,7 @@ const ModalCompare = ({
                             <span className="capitalize"> {dataChart}</span>
                         </h3>
                         <div className="w-full">
-                            <Hourly weatherType={weatherType} />
+                            <CompareChart weatherType={weatherType} />
                         </div>
                     </div>
                 </div>

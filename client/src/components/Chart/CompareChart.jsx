@@ -7,7 +7,7 @@ import moment from "moment-timezone";
 import useDarkMode from "../../hooks/useDarkMode";
 import setTempByTime from "../../utils/setTempByTime";
 import AlertLimitedAPI from "../AlertLimitedAPI";
-const Hourly = ({ weatherType = "hourlyWeather", isAlert = false }) => {
+const CompareChart = ({ weatherType = "hourlyWeather", isAlert = false }) => {
     const {
         weatherState: {
             dataChart,
@@ -136,4 +136,4 @@ const Hourly = ({ weatherType = "hourlyWeather", isAlert = false }) => {
         </>
     );
 };
-export default Hourly;
+export default CompareChart;

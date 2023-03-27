@@ -16,6 +16,9 @@
     }
 }
 @layer components {
+    /* .chart-sun canvas {
+        transform: rotate(-90deg) translateY(-100%);
+    } */
     .toast-before::before {
         content: " ";
         position: absolute;
@@ -25,7 +28,10 @@
         border-color: transparent transparent white transparent;
     }
     .theme {
-        @apply bg-[white] dark:bg-dark shadow-lg dark:shadow-[rgba(255,255,255,.1)];
+        @apply bg-[white] text-[black] dark:text-[white] dark:bg-dark shadow-lg dark:shadow-[rgba(255,255,255,.1)];
+    }
+    .theme-reverse {
+        @apply dark:bg-[white] dark:text-[black] text-[white] bg-dark dark:shadow-lg shadow-[rgba(255,255,255,.1)];
     }
     .center {
         @apply flex items-center justify-center;
@@ -35,6 +41,9 @@
     }
     .bg-image {
         @apply bg-no-repeat bg-cover bg-center;
+    }
+    .button-reverse {
+        @apply px-4 py-2 rounded-md border duration-150 dark:hover:bg-dark dark:hover:text-[white] dark:border-dark dark:text-dark dark:bg-[white]     bg-dark text-primaryText hover:bg-[white] hover:text-dark border-[white] hover:cursor-pointer;
     }
     .button {
         @apply px-4 py-2 rounded-md border duration-150 hover:bg-dark hover:text-[white] border-dark text-dark bg-[white]     dark:bg-dark dark:text-primaryText dark:hover:bg-[white] dark:hover:text-dark dark:border-[white] hover:cursor-pointer;

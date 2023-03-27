@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import AutoComplete from "../../components/CountryStateCity/AutoComplete";
+import AutoComplete from "../CountryStateCity/AutoComplete";
 import { PositionContext } from "../../contexts/PositionContext";
 
 const Input = ({ mode, position, setPosition }) => {

@@ -1,11 +1,11 @@
 import React, { useContext, useState } from "react";
 import Time from "./Time";
-import SemiDoughnut from "./SemiDoughnut";
+import SemiDoughnut from "../Chart/SemiDoughnut";
 import { set2xIconUrl } from "../../utils/setIconUrl";
 import setTempByTime from "../../utils/setTempByTime";
 import { WeatherContext } from "../../contexts/WeatherContext";
-import ChartSun from "../../views/ChartSun/ChartSun";
-import RadarChart from "./RadarChart";
+import ChartSun from "../Chart/ChartSun";
+import RadarChart from "../Chart/RadarChart";
 import moment from "moment-timezone";
 const AllDetail = ({ weather, timezone, isUseWeekly = false }) => {
     const { setDataChart } = useContext(WeatherContext);

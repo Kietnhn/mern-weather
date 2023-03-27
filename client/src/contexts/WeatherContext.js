@@ -13,6 +13,7 @@ import {
     ADD_COMPARE,
     SET_IS_SELECTED_COMPARE,
     SET_HISTORY_WEATHER,
+    SET_SUN_DATA,
 } from "./constants";
 import moment from "moment-timezone";
 export const WeatherContext = createContext();
@@ -29,6 +30,7 @@ const WeatherContextProvider = ({ children }) => {
         isCompare: false,
         isSelectedCompare: false,
         compare: [],
+        sunData: null,
     });
 
     const getCurrentWeather = async ({ lat, lon, isCompare = false }) => {
@@ -86,6 +88,7 @@ const WeatherContextProvider = ({ children }) => {
                     payload: data,
                 });
             }
+            console.log({ data });
             return data;
         } catch (error) {
             dispatch({
@@ -137,6 +140,23 @@ const WeatherContextProvider = ({ children }) => {
             console.error(error);
         }
     };
+
+    const getSunData = async ({ lat, lon, date = "today", timezone }) => {
+        try {
+            const response = await axios(`${apiUrl}/sun`, {
+                params: {
+                    lat,
+                    lon,
+                    date,
+                    timezone,
+                },
+            }).then((res) => res.data);
+            dispatch({ type: SET_SUN_DATA, payload: response.data });
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     const setHistoryWeather = (payload) => {
         dispatch({ type: SET_HISTORY_WEATHER, payload });
     };
@@ -173,6 +193,7 @@ const WeatherContextProvider = ({ children }) => {
         setIsSelectedCompare,
         getHistoryWeather,
         setHistoryWeather,
+        getSunData,
     };
     return (
         <WeatherContext.Provider value={weatherContextData}>

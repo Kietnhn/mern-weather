@@ -1,7 +1,7 @@
 import { SearchIcon } from "../../components/icons";
 import { useContext, useState, useEffect } from "react";
 import { PositionContext } from "../../contexts/PositionContext";
-import CountryStateCity from "../../components/CountryStateCity/CountryStateCity";
+import CountryStateCity from "../CountryStateCity/CountryStateCity";
 import Input from "./Input";
 function Search() {
     const {

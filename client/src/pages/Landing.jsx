@@ -7,10 +7,8 @@ import { AuthContext } from "../contexts/AuthContext";
 import { CityContext } from "../contexts/CityContext";
 import { useEffect } from "react";
 import { LOCAL_STORAGE_TOKEN_NAME } from "../contexts/constants";
-import CitiesLanding from "../components/CitiesLanding";
 import RecommendPosition from "../components/RecommendPosition";
-import { PositionContext } from "../contexts/PositionContext";
-import StatesOfCountry from "../components/StatesOfCountry";
+// import { PositionContext } from "../contexts/PositionContext";
 // import landing1 from "../assets/img/landing1.jpg";
 // import landing2 from "../assets/img/landing2.jpg";
 // import landing3 from "../assets/img/landing3.jpg";
@@ -23,9 +21,9 @@ function Landing() {
     const {
         authState: { isAuthenticated },
     } = useContext(AuthContext);
-    const {
-        positionState: { currentPosition },
-    } = useContext(PositionContext);
+    // const {
+    //     positionState: { currentPosition },
+    // } = useContext(PositionContext);
     // const [landing, setLanding] = useState(landing1);
     // const landingRef = useRef();
 

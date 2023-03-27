@@ -11,10 +11,16 @@ import {
     ADD_COMPARE,
     SET_IS_SELECTED_COMPARE,
     SET_HISTORY_WEATHER,
+    SET_SUN_DATA,
 } from "../contexts/constants";
 export const weatherReducer = (state, action) => {
     const { type, payload } = action;
     switch (type) {
+        case SET_SUN_DATA:
+            return {
+                ...state,
+                sunData: payload,
+            };
         case SET_HISTORY_WEATHER:
             return { ...state, historyWeather: payload, isLoading: false };
         case ADD_COMPARE:
