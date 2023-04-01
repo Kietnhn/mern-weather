@@ -6,9 +6,9 @@ const TodayDesktop = () => {
     return (
         <>
             <div className="px-3 py-2">
-                {/* <MainView />
-                <AirPollution /> */}
-                <Sunview />
+                <MainView />
+                {/* <AirPollution /> */}
+                {/* <Sunview /> */}
                 <Map />
             </div>
         </>

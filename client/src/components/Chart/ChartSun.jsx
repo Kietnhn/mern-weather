@@ -30,14 +30,36 @@ function ChartSun({ className, weather, timezone }) {
         const toLine = (i) => Math.sin((i * Math.PI) / 50) * 12;
         const arrayNull = (n) => Array.from({ length: n }, () => null);
         const data = [...Array(25).keys()].map((i) => toLine(i));
+
         const timeSunRise = [...range(+sunrise * 2, 24)].map((i) => toLine(i));
         const timeSunSet = [...range(+sunset * 2, 24)]
             .map((i) => toLine(i))
             .reverse()
             .slice(1);
+
+        const current = moment.unix(weather.dt).tz(timezone).format("HH");
+        let timeCurrent;
+        if (+current > 12) {
+            const after = 12 - (+current - 12);
+            console.log(after, +current);
+            timeCurrent = [
+                ...range(0, 24),
+                ...range(after * 2, 23).reverse(),
+            ].map((i) => toLine(i));
+            console.log([...range(0, 24), ...range(after * 2, 23).reverse()]);
+        } else {
+            timeCurrent = [...range(0, +current * 2)].map((i) => toLine(i));
+        }
+
         const datasets = [
             {
-                label: "",
+                label: "Current",
+                lineTension: 0.3,
+                fill: true,
+                data: timeCurrent,
+            },
+            {
+                label: "Sun time",
                 lineTension: 0.3,
                 data: [
                     ...arrayNull(+sunrise * 2),
@@ -46,7 +68,7 @@ function ChartSun({ className, weather, timezone }) {
                 ],
             },
             {
-                label: "",
+                label: "Base line",
                 lineTension: 0.3,
                 data: [...data, ...data.reverse().slice(1), 0],
             },
@@ -87,7 +109,7 @@ function ChartSun({ className, weather, timezone }) {
         plugins: {
             legend: {
                 textTransform: "capitalize",
-                position: "bottom",
+                position: "top",
             },
             scales: {
                 x: {

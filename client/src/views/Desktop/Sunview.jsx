@@ -21,8 +21,18 @@ const Sunview = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     return (
-        <div>
-            Sun Chart
+        <div className="p-3">
+            <div>
+                {sunData && (
+                    <div className="">
+                        {[...Object.keys(sunData)].map((item) => (
+                            <div className="px-3" key={item}>
+                                {item}: {sunData[item]}
+                            </div>
+                        ))}
+                    </div>
+                )}
+            </div>
             <ChartSun weather={currentWeather} timezone={timezone} />
         </div>
     );

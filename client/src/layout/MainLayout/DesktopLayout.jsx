@@ -15,6 +15,7 @@ const DesktopLayout = ({ children }) => {
             <div className={`mt-[52px] px-12`}>
                 <div className="relative w-full theme">{children}</div>
             </div>
+            <footer className="h-[1000px]"></footer>
         </div>
     );
 };
