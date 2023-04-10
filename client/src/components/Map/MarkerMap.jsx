@@ -1,13 +1,17 @@
-import React, { useState, useMemo, useRef, useCallback } from "react";
+import React, { useState, useMemo, useRef, useContext, useEffect } from "react";
 import L from "leaflet";
-import { Marker, Popup } from "react-leaflet";
+import markerIconUrl from "../../assets/img/marker-icon.png";
+import { Marker } from "react-leaflet";
+import { PositionContext } from "../../contexts/PositionContext";
 const MarkerMap = ({ weather, lat, lon }) => {
     const markerIcon = new L.Icon({
-        iconUrl:
-            "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c0/Location_dot_black.svg/768px-Location_dot_black.svg.png",
-        iconSize: [10, 10],
+        iconUrl: markerIconUrl,
     });
-    const [draggable, setDraggable] = useState(false);
+    const {
+        getPositionByLatLon,
+        positionState: { areaOnMap },
+    } = useContext(PositionContext);
+    // const [draggable, setDraggable] = useState(false);
     const [position, setPosition] = useState([lat, lon]);
     const markerRef = useRef(null);
     const eventHandlers = useMemo(
@@ -15,31 +19,40 @@ const MarkerMap = ({ weather, lat, lon }) => {
             dragend() {
                 const marker = markerRef.current;
                 if (marker != null) {
+                    const { lat, lng } = marker.getLatLng();
+                    handleGetPositionByLatLon({ lat, lon: lng });
                     setPosition(marker.getLatLng());
                 }
             },
         }),
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         []
     );
-    const toggleDraggable = useCallback(() => {
-        setDraggable((d) => !d);
-    }, []);
+    useEffect(() => {
+        if (!areaOnMap) {
+            setPosition([lat, lon]);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [areaOnMap]);
+    const handleGetPositionByLatLon = async ({ lat, lon }) => {
+        await getPositionByLatLon({ lat, lon });
+    };
 
     return (
         <Marker
-            draggable={draggable}
+            draggable={true}
             eventHandlers={eventHandlers}
             position={position}
             ref={markerRef}
             icon={markerIcon}
         >
-            <Popup minWidth={90}>
+            {/* <Popup minWidth={90}>
                 <span onClick={toggleDraggable}>
                     {draggable
                         ? "Marker is draggable"
                         : "Click here to make marker draggable"}
                 </span>
-            </Popup>
+            </Popup> */}
         </Marker>
     );
 };

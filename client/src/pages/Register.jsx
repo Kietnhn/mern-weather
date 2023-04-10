@@ -4,7 +4,7 @@ import { AuthContext } from "../contexts/AuthContext";
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { ChevronLeftIcon } from "../components/icons";
-
+import validateEmail from "../utils/validateEmail";
 const Register = () => {
     const { registerUser } = useContext(AuthContext);
 
@@ -16,10 +16,11 @@ const Register = () => {
 
     const [registerForm, setRegisterForm] = useState({
         username: "",
+        email: "",
         password: "",
         confirmPassword: "",
     });
-    const { username, password, confirmPassword } = registerForm;
+    const { username, password, confirmPassword, email } = registerForm;
 
     const onChangeLoginForm = (e) =>
         setRegisterForm({ ...registerForm, [e.target.name]: e.target.value });
@@ -27,6 +28,13 @@ const Register = () => {
         e.preventDefault();
         if (password !== confirmPassword) {
             setAlert({ type: "danger", message: "Passwords do not match" });
+            setTimeout(() => {
+                setAlert(null);
+            }, 3000);
+            return;
+        }
+        if (!validateEmail(email)) {
+            setAlert({ type: "danger", message: "Invalid Email" });
             setTimeout(() => {
                 setAlert(null);
             }, 3000);
@@ -80,6 +88,23 @@ const Register = () => {
                         value={username}
                         name="username"
                         placeholder="Username"
+                        required
+                        onChange={onChangeLoginForm}
+                    />
+                </div>
+                <div className="w-full">
+                    <label
+                        className="text-start block w-full capitalize"
+                        htmlFor="email"
+                    >
+                        email
+                    </label>
+                    <input
+                        id="email"
+                        className="w-full outline-none border-b border-[white] pb-2 bg-transparent mb-4 "
+                        value={email}
+                        name="email"
+                        placeholder="Email"
                         required
                         onChange={onChangeLoginForm}
                     />

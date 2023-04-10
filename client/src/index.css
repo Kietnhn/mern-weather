@@ -11,14 +11,105 @@
     display: none !important;
 }
 @layer utilities {
+    .lines-row {
+        background: repeating-linear-gradient(
+            0deg,
+            white,
+            white 24px,
+            rgb(34, 34, 34) 24px,
+            rgb(34, 34, 34) 25px,
+            white 25px,
+            white 26px
+        );
+        padding: 0;
+    }
+    .dark .lines-row {
+        background: repeating-linear-gradient(
+            0deg,
+            #101014,
+            #101014 24px,
+            white 24px,
+            white 25px,
+            #101014 25px,
+            #101014 26px
+        );
+        padding: 0;
+    }
     .show {
         @apply block;
     }
+    .contact .leaflet-tile-loaded {
+        filter: brightness(1) invert(1) grayscale(10);
+    }
+    .contact .leaflet-container a {
+        color: #000000;
+    }
+    .contact .leaflet-container .leaflet-control-attribution {
+        background: none;
+        background-color: #fff;
+    }
 }
 @layer components {
-    /* .chart-sun canvas {
-        transform: rotate(-90deg) translateY(-100%);
-    } */
+    input,
+    textarea {
+        outline: none;
+    }
+
+    /* input */
+
+    .form-input {
+        @apply w-full py-2 border-b-2;
+    }
+    .form-textarea {
+        @apply w-full py-2 border-b-2 resize-none overflow-y-hidden;
+    }
+    .form-label {
+        @apply absolute top-1/2 -translate-y-1/2 left-0 duration-150 capitalize;
+    }
+    .form-label.authenticated-label-textarea {
+        top: 0;
+    }
+    .form-textarea:not(:placeholder-shown) + .form-label,
+    .form-textarea:focus + .form-label {
+        top: -24px;
+        left: 0;
+        transform: translateY(0) !important;
+    }
+    .form-input:not(:placeholder-shown) + .form-label,
+    .form-input:focus + .form-label {
+        top: -16px !important;
+        left: 0px !important;
+        transform: translateY(0) !important;
+    }
+    .form input,
+    .form-label {
+        @apply text-[black] font-semibold;
+    }
+
+    /* tooltip */
+    .tooltip:hover .tooltip-message {
+        @apply block;
+    }
+    .tooltip:hover .tooltip-message:after {
+        @apply block;
+    }
+    .tooltip-message {
+        @apply hidden absolute py-1 top-[calc(-100%-4px)] left-1/2 -translate-x-1/2 min-w-[100px] text-center font-semibold rounded-lg theme shadow-lg;
+    }
+    .tooltip-message:after {
+        display: none;
+        content: " ";
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        border-width: 10px;
+        border-color: white transparent transparent transparent;
+    }
+    .dark .tooltip-message:after {
+        border-color: black transparent transparent transparent;
+    }
+    /* toast */
     .toast-before::before {
         content: " ";
         position: absolute;
@@ -43,7 +134,7 @@
         @apply bg-no-repeat bg-cover bg-center;
     }
     .button-reverse {
-        @apply px-4 py-2 rounded-md border duration-150 dark:hover:bg-dark dark:hover:text-[white] dark:border-dark dark:text-dark dark:bg-[white]     bg-dark text-primaryText hover:bg-[white] hover:text-dark border-[white] hover:cursor-pointer;
+        @apply px-4 py-2 rounded-md border duration-150 dark:hover:bg-dark dark:hover:text-[white] dark:hover:border-[white] dark:border-dark dark:text-dark dark:bg-[white]     bg-dark text-primaryText hover:bg-[white] hover:text-dark border-[white] hover:border-dark hover:cursor-pointer;
     }
     .button {
         @apply px-4 py-2 rounded-md border duration-150 hover:bg-dark hover:text-[white] border-dark text-dark bg-[white]     dark:bg-dark dark:text-primaryText dark:hover:bg-[white] dark:hover:text-dark dark:border-[white] hover:cursor-pointer;

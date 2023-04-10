@@ -9,7 +9,7 @@ import InfoMap from "./InfoMap";
 const WeatherMap = () => {
     const {
         weatherState: {
-            weatherData: { currentWeather, lat, lon },
+            weatherData: { currentWeather, lat, lon, timezone },
         },
     } = useContext(WeatherContext);
     const [map, setMap] = useState(null);
@@ -17,7 +17,7 @@ const WeatherMap = () => {
     return (
         <div className="relative h-full">
             <MapContainer
-                className="markercluster-map h-full m-3 py-3"
+                className="markercluster-map h-full p-3"
                 center={[lat, lon]}
                 zoom={10}
                 zoomControl={true}
@@ -36,14 +36,15 @@ const WeatherMap = () => {
                     map={map}
                     center={[lat, lon]}
                     zoom={10}
-                    className="absolute right-0 bottom-0 z-[999]"
+                    className="absolute right-2.5 bottom-2.5 z-[999]"
                 />
             )}
             {map && (
                 <InfoMap
+                    timezone={timezone}
                     map={map}
                     weather={currentWeather}
-                    className="absolute top-20 left-5 bg-[white] z-[999]"
+                    className="absolute top-20 left-2.5 bg-[white] z-[999]"
                 />
             )}
         </div>

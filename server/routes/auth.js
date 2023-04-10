@@ -29,12 +29,16 @@ router.get("/", verifyToken, async (req, res) => {
 //@dec Register user
 //@access Public
 router.post("/register", async (req, res) => {
-    const { username, password } = req.body;
+    const { username, password, email } = req.body;
     if (!username || !password)
         return res
             .status(400)
             .json({ success: false, message: "Missing username or password" });
-
+    if (!email) {
+        return res
+            .status(400)
+            .json({ success: false, message: "Email is required" });
+    }
     try {
         const user = await User.findOne({ username });
         if (user) {
@@ -43,7 +47,7 @@ router.post("/register", async (req, res) => {
                 .json({ success: false, message: "Username already taken" });
         }
         const hashedPassword = await argon2.hash(password);
-        const newUser = new User({ username, password: hashedPassword });
+        const newUser = new User({ username, email, password: hashedPassword });
         await newUser.save();
 
         const accessToken = jwt.sign(

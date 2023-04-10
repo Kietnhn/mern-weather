@@ -57,6 +57,7 @@ const AuthContextProvider = ({ children }) => {
                         user: response.data.user,
                     },
                 });
+                console.log("isAuthenticated", response.data.success);
             }
         } catch (error) {
             localStorage.removeItem(LOCAL_STORAGE_TOKEN_NAME);

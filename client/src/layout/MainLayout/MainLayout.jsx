@@ -3,6 +3,7 @@ import { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import DesktopLayout from "./DesktopLayout";
 import MobileLayout from "./MobileLayout";
+import Footer from "../../views/Footer/Footer";
 function MainLayout({ children }) {
     const {
         weatherState: {
@@ -25,6 +26,7 @@ function MainLayout({ children }) {
                     <MobileLayout>{children}</MobileLayout>
                 </div>
             )}
+            <Footer />
         </>
     );
 }

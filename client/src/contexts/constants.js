@@ -22,6 +22,7 @@ export const ADD_COMPARE = "ADD_COMPARE";
 export const SET_SUN_DATA = "SET_SUN_DATA";
 // position
 export const SET_POSITIONS = "SET_POSITIONS";
+export const SET_AREA_ON_MAP = "SET_AREA_ON_MAP";
 export const SET_CURRENT_POSIITON = "SET_CURRENT_POSIITON";
 
 // air

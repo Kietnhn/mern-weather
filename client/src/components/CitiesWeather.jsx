@@ -7,6 +7,7 @@ import setIconUrl from "../utils/setIconUrl";
 import { DeleteIcon } from "./icons";
 import setBackgroundGradient from "../utils/setBackgroundGradient";
 import defaultData from "../utils/defaultCityData";
+
 const CitiesWeather = ({ isEdit, className }) => {
     const {
         cityState: { cities },
@@ -21,17 +22,11 @@ const CitiesWeather = ({ isEdit, className }) => {
     } = useContext(AuthContext);
     const navigate = useNavigate();
     const [alert, setAlert] = useState(null);
-    const [data, setData] = useState(null);
+    const [data, setData] = useState([]);
     useEffect(() => {
-        setData(() => {
-            if (isAuthenticated) {
-                if (cities.length < 3) {
-                    return [...cities, ...defaultData];
-                }
-                return cities;
-            }
-            return defaultData;
-        });
+        if (isAuthenticated && cities) {
+            setData(cities);
+        }
     }, [cities, isAuthenticated]);
     const hanldeSelectWeather = async (weather) => {
         if (!isEdit) {
@@ -54,9 +49,55 @@ const CitiesWeather = ({ isEdit, className }) => {
             setAlert(null);
         }
     };
+    const CityWeather = ({ weather }) => {
+        return (
+            <div
+                onClick={() => hanldeSelectWeather(weather)}
+                className={`w-full between overflow-hidden  rounded-2xl  
+                        ${
+                            weather?.weather.imgUrl
+                                ? "bg-image "
+                                : setBackgroundGradient(weather?.weather?.icon)
+                        } theme mb-2 hover:cursor-pointer px-3 min-h-[54px]`}
+                style={{
+                    backgroundImage: `${
+                        weather?.weather.imgUrl
+                            ? `url(${weather.weather?.imgUrl})`
+                            : " "
+                    }`,
+                }}
+            >
+                <h2 className="font-semibold capitalize max-w-[100px] overflow-hidden text-xl whitespace-nowrap hover:-translate-x-1/2 duration-[2s]">
+                    {weather?.weather?.name}
+                </h2>
+                {weather?.weather?.temp && (
+                    <>
+                        <div>
+                            <img
+                                className="w-10 h-10"
+                                src={setIconUrl(weather?.weather?.icon)}
+                                alt={weather?.weather?.description}
+                            />
+                        </div>
+                        <h2 className="text-xl">
+                            {weather?.weather?.temp}&deg;
+                        </h2>
+                    </>
+                )}
+
+                {isEdit && (
+                    <button onClick={() => setAlert(weather)}>
+                        <span>
+                            <DeleteIcon />
+                        </span>
+                    </button>
+                )}
+            </div>
+        );
+    };
     if (!data) return <></>;
     return (
-        <>
+        <div>
             {alert && (
                 <div className={`"fixed inset-0 bg-[rgba(0,0,0,.4)] z-[50]"`}>
                     <div className="bg-primaryText text-center text-dark p-6 rounded-2xl absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
@@ -78,56 +119,33 @@ const CitiesWeather = ({ isEdit, className }) => {
                     </div>
                 </div>
             )}
-            {data?.length > 0 &&
-                data?.map((weather) => (
-                    <div
-                        onClick={() => hanldeSelectWeather(weather)}
-                        key={`${weather._id || weather?.weather.imgUrl}`}
-                        className={`w-full flex items-center overflow-hidden justify-between rounded-2xl  
-                        ${
-                            weather?.weather.imgUrl
-                                ? "bg-image"
-                                : setBackgroundGradient(weather?.weather?.icon)
-                        } dark:text-primaryText text-dark  mb-2 ${className}`}
-                        style={{
-                            backgroundImage: `${
-                                weather?.weather.imgUrl
-                                    ? `url(${weather.weather?.imgUrl})`
-                                    : " "
-                            }`,
-                        }}
-                    >
-                        <div className="overflow-hidden w-1/2 font-semibold text-start capitalize">
-                            <h2 className="text-xl whitespace-nowrap hover:-translate-x-1/2 duration-[2s]">
-                                {weather?.weather?.name}
-                            </h2>
-                            {/* <p>{weather?.weather?.description}</p> */}
-                        </div>
-                        {weather?.weather?.temp && (
-                            <>
-                                <div>
-                                    <img
-                                        className="w-10 h-10"
-                                        src={setIconUrl(weather?.weather?.icon)}
-                                        alt={weather?.weather?.description}
-                                    />
-                                </div>
-                                <h2 className="text-xl">
-                                    {weather?.weather?.temp}&deg;
-                                </h2>
-                            </>
-                        )}
-
-                        {isEdit && (
-                            <button onClick={() => setAlert(weather)}>
-                                <span>
-                                    <DeleteIcon />
-                                </span>
-                            </button>
-                        )}
+            {data.length > 0 && (
+                <div>
+                    <h3 className="font-semibold text-xl">My Positions</h3>
+                    <div className="h-[50vh] overflow-auto">
+                        {data.map((weather) => (
+                            <div
+                                key={`${
+                                    weather._id || weather?.weather.imgUrl
+                                }`}
+                            >
+                                <CityWeather weather={weather} />
+                            </div>
+                        ))}
                     </div>
-                ))}
-        </>
+                </div>
+            )}
+            <div>
+                <h3 className="font-semibold text-xl">Famoust cities</h3>
+                <div>
+                    {defaultData.map((weather) => (
+                        <div key={`${weather._id || weather?.weather.imgUrl}`}>
+                            <CityWeather weather={weather} />
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </div>
     );
 };
 

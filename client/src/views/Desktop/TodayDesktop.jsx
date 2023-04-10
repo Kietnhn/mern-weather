@@ -2,15 +2,18 @@ import Map from "./Map";
 import MainView from "./MainView";
 import AirPollution from "./AirPollution/AirPollution";
 import Sunview from "./Sunview";
+import Contact from "../Contact/Contact";
+import { Fade } from "react-awesome-reveal";
 const TodayDesktop = () => {
     return (
         <>
-            <div className="px-3 py-2">
+            <Fade>
                 <MainView />
-                {/* <AirPollution /> */}
-                {/* <Sunview /> */}
+                <AirPollution />
+                <Sunview />
                 <Map />
-            </div>
+                <Contact />
+            </Fade>
         </>
     );
 };

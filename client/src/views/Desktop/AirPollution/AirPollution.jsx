@@ -1,5 +1,6 @@
 import { useState, useEffect, useContext } from "react";
 import LoadingComponent from "../../../components/LoadingComponent";
+import Wrapper from "../../../components/Wrapper";
 import { AirContext } from "../../../contexts/AirContext";
 import { WeatherContext } from "../../../contexts/WeatherContext";
 import Current from "./Current/Current";
@@ -23,7 +24,7 @@ const AirPollution = () => {
     };
     const renderProps = () => {
         if (mode === "history") return <History />;
-        return <Current current={current} />;
+        return <>{current && <Current current={current} />}</>;
     };
     useEffect(() => {
         console.log({ mode });
@@ -35,34 +36,37 @@ const AirPollution = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [weatherData]);
     return (
-        <div className="w-full mb-3 theme-reverse px-5 py-3">
-            <div className="between">
-                <h2 className="font-semibold text-xl">AirPollution</h2>
-            </div>
-            <div className="flex -mx-3">
-                <div className="w-4/5 px-3">
-                    {airLoading ? (
-                        <LoadingComponent className="w-full h-full relative" />
-                    ) : (
-                        renderProps()
-                    )}
-                </div>
-                <div className="w-1/5 px-3">
-                    <div className="flex flex-col gap-3">
-                        {["current", "history", "forecast"].map((item) => (
-                            <div key={item}>
-                                <button
-                                    onClick={() => handleSetMode(item)}
-                                    className="capitalize button-reverse"
-                                >
-                                    {item}
-                                </button>
-                            </div>
-                        ))}
+        <Wrapper title="Air Pollution" theme="theme-reverse">
+            <div className="w-full px-5 py-3">
+                <div className="flex -mx-3">
+                    <div className="w-4/5 px-3">
+                        {airLoading ? (
+                            <LoadingComponent className="w-full h-full relative" />
+                        ) : (
+                            renderProps()
+                        )}
+                    </div>
+                    <div className="w-1/5 px-3">
+                        <div className="flex flex-col gap-3">
+                            {["current", "history", "forecast"].map((item) => (
+                                <div key={item}>
+                                    <button
+                                        onClick={() => handleSetMode(item)}
+                                        className={`capitalize ${
+                                            mode === item
+                                                ? "button"
+                                                : " button-reverse"
+                                        }`}
+                                    >
+                                        {item}
+                                    </button>
+                                </div>
+                            ))}
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </Wrapper>
     );
 };
 export default AirPollution;

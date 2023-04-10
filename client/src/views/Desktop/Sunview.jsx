@@ -1,5 +1,6 @@
 import React, { useContext, useEffect } from "react";
 import ChartSun from "../../components/Chart/ChartSun";
+import Wrapper from "../../components/Wrapper";
 import { WeatherContext } from "../../contexts/WeatherContext";
 
 const Sunview = () => {
@@ -21,20 +22,26 @@ const Sunview = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     return (
-        <div className="p-3">
-            <div>
+        <Wrapper title="Sun & Moon">
+            <div className="p-3">
                 {sunData && (
-                    <div className="">
+                    <div className="theme">
                         {[...Object.keys(sunData)].map((item) => (
-                            <div className="px-3" key={item}>
-                                {item}: {sunData[item]}
+                            <div
+                                className="px-3 font-semibold text-base flex gap-4 items-center"
+                                key={item}
+                            >
+                                <span className="text-text capitalize">
+                                    {item.split("_").join(" ")}:
+                                </span>
+                                <span>{sunData[item]}</span>
                             </div>
                         ))}
                     </div>
                 )}
             </div>
             <ChartSun weather={currentWeather} timezone={timezone} />
-        </div>
+        </Wrapper>
     );
 };
 

@@ -77,6 +77,7 @@ const WeatherContextProvider = ({ children }) => {
                         lon: dataResponse.lon,
                     };
                 });
+            console.log("getCurrentWeather", data);
             if (!isCompare) {
                 dispatch({
                     type: SET_WEATHER_DATA,

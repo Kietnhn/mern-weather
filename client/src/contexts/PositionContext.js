@@ -6,12 +6,14 @@ import {
     SET_CURRENT_POSIITON,
     SET_LOADING,
     SET_POSITIONS,
+    SET_AREA_ON_MAP,
 } from "./constants";
 export const PositionContext = createContext();
 const PositionContextProvider = ({ children }) => {
     const [positionState, dispatch] = useReducer(positionReducer, {
         positions: null,
         currentPosition: null,
+        areaOnMap: "",
     });
     const getPosition = async (position, limit = 5) => {
         // position is name of countr,city
@@ -54,7 +56,31 @@ const PositionContextProvider = ({ children }) => {
         // const { latitude, longitude } = response.data.data;
         // await getNearByPosition({ lat: latitude, lon: longitude });
     };
-
+    const getPositionByLatLon = async ({ lat, lon, limit = 1 }) => {
+        // dispatch({
+        //     type: SET_LOADING,
+        //     payload: true,
+        // });
+        try {
+            const response = await axios
+                .get(`${apiUrl}/position/reverse`, {
+                    params: {
+                        lat,
+                        lon,
+                        limit,
+                    },
+                })
+                .then((res) => {
+                    return res.data;
+                });
+            dispatch({
+                type: SET_AREA_ON_MAP,
+                payload: response.data[0],
+            });
+        } catch (e) {
+            console.log(e);
+        }
+    };
     const getNearByPosition = async ({ lat, lon }) => {
         const data = await axios.get(`${apiUrl}/position/nearby`, {
             params: {
@@ -64,7 +90,12 @@ const PositionContextProvider = ({ children }) => {
         });
         console.log("newarby", data);
     };
-
+    const setAreaOnMap = (payload) => {
+        dispatch({
+            type: SET_AREA_ON_MAP,
+            payload: payload,
+        });
+    };
     useEffect(() => {
         getCurrenPosition();
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -74,6 +105,8 @@ const PositionContextProvider = ({ children }) => {
         getPosition,
         getCurrenPosition,
         getNearByPosition,
+        getPositionByLatLon,
+        setAreaOnMap,
     };
     return (
         <PositionContext.Provider value={PositionContextData}>
