@@ -6,14 +6,14 @@ import setBackgroundGradient from "../utils/setBackgroundGradient";
 import data from "../utils/defaultCityData";
 
 const CitiesLanding = () => {
-    const { getCurrentWeather, setCompare } = useContext(WeatherContext);
+    const { getWeatherData, setCompare } = useContext(WeatherContext);
     const {
         cityState: { cities },
     } = useContext(CityContext);
 
     const navigate = useNavigate();
     const handleSelectPosition = async ({ lat, lon }) => {
-        const weatherData = await getCurrentWeather({ lat, lon });
+        const weatherData = await getWeatherData({ lat, lon });
         setCompare([{ ...weatherData }]);
         navigate("/today");
     };

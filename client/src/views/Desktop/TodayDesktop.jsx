@@ -3,17 +3,20 @@ import MainView from "./MainView";
 import AirPollution from "./AirPollution/AirPollution";
 import Sunview from "./Sunview";
 import Contact from "../Contact/Contact";
-import { Fade } from "react-awesome-reveal";
+import Navigation from "./Navigation";
+
+// import { Fade } from "react-awesome-reveal";
 const TodayDesktop = () => {
     return (
         <>
-            <Fade>
-                <MainView />
-                <AirPollution />
-                <Sunview />
-                <Map />
-                <Contact />
-            </Fade>
+            <Navigation />
+            {/* <Fade cascade> */}
+            <MainView />
+            <AirPollution />
+            <Sunview />
+            <Map />
+            <Contact />
+            {/* </Fade> */}
         </>
     );
 };

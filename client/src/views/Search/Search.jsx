@@ -3,9 +3,10 @@ import { useContext, useState, useEffect } from "react";
 import { PositionContext } from "../../contexts/PositionContext";
 import CountryStateCity from "../CountryStateCity/CountryStateCity";
 import Input from "./Input";
+import LoadingComponent from "../../components/LoadingComponent";
 function Search() {
     const {
-        positionState: { currentPosition },
+        positionState: { currentPosition, isLoading },
     } = useContext(PositionContext);
 
     const [position, setPosition] = useState({
@@ -34,7 +35,6 @@ function Search() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentPosition]);
 
-    if (!currentPosition) return <></>;
     return (
         <div className="relative">
             <div className="dark:bg-secondDark bg-[#dee1e6]  text-dark dark:text-primaryText between font-semibold lg:px-3 w-full">
@@ -57,8 +57,12 @@ function Search() {
                     })}
                 </div>
             </div>
-            <div className="mt-6">
-                <CountryStateCity position={position} />
+            <div className="mt-6 relative">
+                {isLoading ? (
+                    <LoadingComponent className="absolute inset-0 backdrop-blur" />
+                ) : (
+                    <CountryStateCity position={position} />
+                )}
             </div>
         </div>
     );

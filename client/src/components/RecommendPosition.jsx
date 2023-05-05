@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { LocationIcon, TimesIcon } from "./icons";
 import { PositionContext } from "../contexts/PositionContext";
 const RecommendPosition = () => {
-    const { getCurrentWeather, setCompare } = useContext(WeatherContext);
+    const { getWeatherData, setCompare } = useContext(WeatherContext);
     const {
         positionState: { currentPosition },
     } = useContext(PositionContext);
@@ -14,8 +14,7 @@ const RecommendPosition = () => {
     const handleSetCurrentWeather = async () => {
         const lat = currentPosition.latitude;
         const lon = currentPosition.longitude;
-        const weatherData = await getCurrentWeather({ lat, lon });
-        setCompare([{ ...weatherData }]);
+        await getWeatherData({ lat, lon });
         setShowToast(false);
         navigate("/today");
     };
@@ -23,9 +22,9 @@ const RecommendPosition = () => {
     useEffect(() => {
         if (currentPosition) {
             setShowToast(true);
-            // setTimeout(() => {
-            //     setShowToast(false);
-            // }, 7000);
+            setTimeout(() => {
+                setShowToast(false);
+            }, 7000);
         }
     }, [currentPosition]);
     if (!currentPosition) return <></>;

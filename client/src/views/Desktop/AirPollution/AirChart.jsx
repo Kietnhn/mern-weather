@@ -20,17 +20,23 @@ const AirChart = ({ list = [], timezone }) => {
                 textTransform: "capitalize",
                 position: "bottom",
             },
+            tooltip: {
+                callbacks: {
+                    title: function (chart) {
+                        return moment
+                            .unix(list[chart[0].dataIndex].dt)
+                            .tz(timezone)
+                            .format("YYYY/MM/DD-HH:mm");
+                    },
+                },
+            },
         },
     });
     useEffect(() => {
-        const labels = list?.map((item) => {
-            const hour = moment.unix(item.dt).tz(timezone).format("HH:mm");
-            if (hour === "00:00")
-                return moment.unix(item.dt).tz(timezone).format("YYYY/MM/DD-HH:mm");
-            return hour;
-        });
+        const labels = list?.map((item) =>
+            moment.unix(item.dt).tz(timezone).format("HH:mm")
+        );
         const pollutants = [...Object.keys(list[0]?.components)];
-        console.log({ pollutants });
         const datasets = pollutants?.map((pollutant) => ({
             label: `${pollutant}`,
             data: list?.map((item) => item.components[pollutant]),

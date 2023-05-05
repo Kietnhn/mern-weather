@@ -1,12 +1,5 @@
-import React, { useContext, useState } from "react";
-import {
-    UVIcon,
-    PressureIcon,
-    EyeIcon,
-    DropletIcon,
-    WindIcon,
-    TemperatureIcon,
-} from "../icons";
+import React, { useContext } from "react";
+import data from "../../routes/viewInfoData";
 import Time from "./Time";
 import { set2xIconUrl } from "../../utils/setIconUrl";
 import setTempByTime from "../../utils/setTempByTime";
@@ -17,38 +10,6 @@ import SwitchUnitTemp from "../Button/SwitchUnitTemp";
 const MainView = ({ weather, timezone, indexActive }) => {
     const { setDataChart } = useContext(WeatherContext);
 
-    const [data] = useState([
-        {
-            name: "uvi",
-            unit: "",
-            icon: UVIcon,
-        },
-        {
-            name: "wind_deg",
-            unit: "\u00B0",
-            icon: TemperatureIcon,
-        },
-        {
-            name: "wind_speed",
-            unit: "m/s",
-            icon: WindIcon,
-        },
-        {
-            name: "humidity",
-            unit: "%",
-            icon: DropletIcon,
-        },
-        {
-            name: "pressure",
-            unit: "hPa",
-            icon: PressureIcon,
-        },
-        {
-            name: "visibility",
-            unit: "ms",
-            icon: EyeIcon,
-        },
-    ]);
     const handleSetDataChart = (dataChart) => {
         setDataChart(dataChart);
     };
@@ -76,9 +37,9 @@ const MainView = ({ weather, timezone, indexActive }) => {
             </div>
         );
     };
-    if (!weather || !data) return <></>;
+    if (!weather) return <></>;
     return (
-        <div className="w-full px-5 py-3 ">
+        <div className="">
             <div className="flex justify-between items-center mb-3">
                 <Time timezone={timezone} weather={weather} />
                 <SwitchUnitTemp />
@@ -109,7 +70,9 @@ const MainView = ({ weather, timezone, indexActive }) => {
                                       ]}
                                 &deg;
                             </h1>
-                            <p>{weather.weather[0].description}</p>
+                            <p className="font-semibold">
+                                {weather.weather[0].main}
+                            </p>
                         </div>
                     </div>
                 </div>

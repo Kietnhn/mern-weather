@@ -6,3 +6,4 @@ export { default as Next7Day } from "./Next7Day";
 export { default as Today } from "./Today";
 export { default as Calendar } from "./Calendar";
 export { default as City } from "./City";
+export { default as Comparative } from "./Comparative";

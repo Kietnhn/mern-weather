@@ -3,14 +3,12 @@ import LoadingComponent from "../../../components/LoadingComponent";
 import Wrapper from "../../../components/Wrapper";
 import { AirContext } from "../../../contexts/AirContext";
 import { WeatherContext } from "../../../contexts/WeatherContext";
-import Current from "./Current/Current";
-import History from "./History/History";
+import Current from "./Current";
+import History from "./History";
+import Forecast from "./Forecast";
 const AirPollution = () => {
     const [mode, setMode] = useState("current");
-    // const [firsts, setFirsts] = useState({
-    //     historyF1: false,
-    //     forecaseF1: false,
-    // });
+
     const {
         airState: { current, airLoading },
         getCurrentAirPollution,
@@ -23,7 +21,11 @@ const AirPollution = () => {
         setMode(mode);
     };
     const renderProps = () => {
-        if (mode === "history") return <History />;
+        const { lat, lon, timezone } = weatherData;
+        if (mode === "forecast") {
+            return <Forecast lat={lat} lon={lon} timezone={timezone} />;
+        }
+        if (mode === "history") return <History timezone={timezone} />;
         return <>{current && <Current current={current} />}</>;
     };
     useEffect(() => {
@@ -36,7 +38,7 @@ const AirPollution = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [weatherData]);
     return (
-        <Wrapper title="Air Pollution" theme="theme-reverse">
+        <Wrapper title="Air Pollution" theme="theme" id="airpollution">
             <div className="w-full px-5 py-3">
                 <div className="flex -mx-3">
                     <div className="w-4/5 px-3">

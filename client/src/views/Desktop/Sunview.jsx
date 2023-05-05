@@ -22,7 +22,7 @@ const Sunview = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     return (
-        <Wrapper title="Sun & Moon">
+        <Wrapper title="Sun & Moon" id="sunmoon">
             <div className="p-3">
                 {sunData && (
                     <div className="theme">

@@ -1,6 +1,9 @@
 import React, { useState } from "react";
-import getStateOfAir from "../../../../utils/getStateOfAir";
-import airPollutionGif from "../../../../assets/gif/air-pollution.gif";
+import getStateOfAir from "../../../utils/getStateOfAir";
+// import airPollutionGif from "../../../../assets/gif/air-pollution.gif";
+// eslint-disable-next-line no-unused-vars
+import { Chart as ChartJS } from "chart.js/auto";
+import { Bar } from "react-chartjs-2";
 const Current = ({ current }) => {
     const [stateOfAir] = useState(() =>
         getStateOfAir(current?.list[0].main.aqi)
@@ -13,6 +16,21 @@ const Current = ({ current }) => {
             </span>
         );
     };
+    const [data] = useState(() => {
+        const airData = current.list[0].components;
+        const labels = Object.keys(airData);
+        const datasets = [
+            {
+                label: "First dataset",
+                data: labels.map((label) => airData[label]),
+                borderWidth: 1,
+            },
+        ];
+        return {
+            labels,
+            datasets,
+        };
+    });
     return (
         <div>
             <div className="between mb-3">
@@ -47,11 +65,22 @@ const Current = ({ current }) => {
                     ))}
                 </div>
             </div>
-            <div>
-                <div
+            <div className="h-[300px] w-full">
+                {/* <div
                     className="h-[300px] bg-no-repeat bg-cover bg-center"
                     style={{ backgroundImage: `url(${airPollutionGif})` }}
-                ></div>
+                ></div> */}
+                <>
+                    <Bar
+                        options={{
+                            maintainAspectRatio: false,
+                            responsive: true,
+                        }}
+                        data={data}
+                        height={300}
+                        width="100%"
+                    />
+                </>
             </div>
         </div>
     );

@@ -79,9 +79,6 @@ function Landing() {
                     <h1 className="text-6xl font-bold text-center title ">
                         WeT
                     </h1>
-                    {/* <h3 className="text-2xl font-semibold">
-                        weather,calendar,todo, and more,...
-                    </h3> */}
                 </div>
                 <Search />
             </div>

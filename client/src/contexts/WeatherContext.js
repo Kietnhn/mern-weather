@@ -15,12 +15,17 @@ import {
     SET_HISTORY_WEATHER,
     SET_SUN_DATA,
 } from "./constants";
-import moment from "moment-timezone";
+import getTodayHourlyWeatherData from "../utils/getTodayHourlyWeatherData";
 export const WeatherContext = createContext();
 const WeatherContextProvider = ({ children }) => {
     const [weatherState, dispatch] = useReducer(weatherReducer, {
         weatherData: {},
-        historyWeather: null,
+        historyWeather: {
+            history1_day: null,
+            history3_day: null,
+            history5_day: null,
+            history7_day: null,
+        },
         forecastWeather: [],
         toggleTheme: false,
         isLoading: false,
@@ -32,8 +37,51 @@ const WeatherContextProvider = ({ children }) => {
         compare: [],
         sunData: null,
     });
+    const getCompareWeatherData = async ({ lat, lon }) => {
+        try {
+            dispatch({
+                type: SET_LOADING,
+                payload: true,
+            });
+            const data = await axios
+                .get(`${apiUrl}/weather`, {
+                    params: {
+                        lat,
+                        lon,
+                    },
+                })
+                .then((res) => {
+                    const dataResponse = res.data.weather;
+                    const { timezone, current, hourly, daily, lat, lon } =
+                        dataResponse;
+                    const hourlyWeather = getTodayHourlyWeatherData(
+                        hourly,
+                        timezone
+                    );
 
-    const getCurrentWeather = async ({ lat, lon, isCompare = false }) => {
+                    return {
+                        timezone,
+                        currentWeather: current,
+                        hourlyWeather,
+                        weeklyWeather: daily,
+                        lat,
+                        lon,
+                    };
+                });
+            dispatch({
+                type: ADD_COMPARE,
+                payload: data,
+            });
+        } catch (e) {
+            dispatch({
+                type: SET_LOADING,
+                payload: false,
+            });
+            console.log(e);
+        }
+    };
+
+    const getWeatherData = async ({ lat, lon }) => {
         try {
             dispatch({
                 type: SET_LOADING,
@@ -49,48 +97,76 @@ const WeatherContextProvider = ({ children }) => {
                 })
                 .then((res) => {
                     const dataResponse = res.data.weather;
-                    const getHourlyWeather = (hourlyData, timezone) => {
-                        const endOfDay = moment()
-                            .tz(timezone)
-                            .endOf("day")
-                            .valueOf();
-                        const endTimeStamp = Math.floor(endOfDay / 1000);
 
-                        const todaysData = hourlyData.filter(
-                            (data) => data.dt < endTimeStamp
-                        );
+                    const {
+                        timezone,
+                        current,
+                        hourly,
+                        minutely,
+                        daily,
+                        lat,
+                        lon,
+                    } = dataResponse;
 
-                        return todaysData;
-                    };
-
-                    const hourlyWeather = getHourlyWeather(
-                        dataResponse.hourly,
-                        dataResponse.timezone
+                    const hourlyWeather = getTodayHourlyWeatherData(
+                        hourly,
+                        timezone
                     );
-                    const weeklyWeather = dataResponse.daily;
                     return {
-                        timezone: dataResponse.timezone,
-                        currentWeather: dataResponse.current,
-                        hourlyWeather: hourlyWeather,
-                        weeklyWeather: weeklyWeather,
-                        lat: dataResponse.lat,
-                        lon: dataResponse.lon,
+                        timezone,
+                        currentWeather: current,
+                        hourlyWeather,
+                        minutelyWeather: minutely,
+                        weeklyWeather: daily,
+                        lat,
+                        lon,
                     };
                 });
-            console.log("getCurrentWeather", data);
-            if (!isCompare) {
-                dispatch({
-                    type: SET_WEATHER_DATA,
-                    payload: data,
-                });
-            } else {
-                dispatch({
-                    type: ADD_COMPARE,
-                    payload: data,
-                });
-            }
-            console.log({ data });
+
+            dispatch({
+                type: SET_WEATHER_DATA,
+                payload: data,
+            });
             return data;
+        } catch (error) {
+            dispatch({
+                type: SET_LOADING,
+                payload: false,
+            });
+            console.error(error);
+        }
+    };
+
+    const getHistoryWeather2_5 = async ({
+        lat,
+        lon,
+        dt,
+        timezone,
+        datetime,
+    }) => {
+        try {
+            dispatch({
+                type: SET_LOADING,
+                payload: true,
+            });
+            const response = await axios(`${apiUrl}/weather/history/2.5`, {
+                params: {
+                    lat,
+                    lon,
+                    dt,
+                },
+            }).then((res) => res.data);
+            if (response.success) {
+                dispatch({
+                    type: SET_LOADING,
+                    payload: false,
+                });
+                return getTodayHourlyWeatherData(
+                    response.weather,
+                    timezone,
+                    datetime
+                );
+            }
         } catch (error) {
             dispatch({
                 type: SET_LOADING,
@@ -183,7 +259,11 @@ const WeatherContextProvider = ({ children }) => {
         dispatch({ type: SET_UNIT, payload });
     };
     const weatherContextData = {
-        getCurrentWeather,
+        getWeatherData,
+        getCompareWeatherData,
+        getHistoryWeather2_5,
+        getHistoryWeather,
+        getSunData,
         weatherState,
         setUnitTemp,
         setIsUseAnimateBackground,
@@ -192,9 +272,7 @@ const WeatherContextProvider = ({ children }) => {
         setCompare,
         addCompare,
         setIsSelectedCompare,
-        getHistoryWeather,
         setHistoryWeather,
-        getSunData,
     };
     return (
         <WeatherContext.Provider value={weatherContextData}>

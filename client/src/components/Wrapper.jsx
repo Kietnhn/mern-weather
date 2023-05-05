@@ -1,6 +1,6 @@
-const Wrapper = ({ children, title = "", styleTitle, theme = "theme" }) => {
+const Wrapper = ({ children, title = "", styleTitle, theme = "theme", id }) => {
     return (
-        <div className={`w-full h-[calc(100vh-52px)] mb-5 ${theme}`}>
+        <div className={`w-full h-screen pt-[52px] mb-5 ${theme}`} id={id}>
             <div className="w-[1300px] mx-auto ">
                 {title && (
                     <h1
@@ -11,7 +11,7 @@ const Wrapper = ({ children, title = "", styleTitle, theme = "theme" }) => {
                         {title}
                     </h1>
                 )}
-                <div>{children}</div>
+                {children}
             </div>
         </div>
     );

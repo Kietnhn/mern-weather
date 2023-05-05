@@ -10,7 +10,7 @@ const Weekly = ({ setIndexActive = () => {}, indexActive = 0 }) => {
         },
     } = useContext(WeatherContext);
     return (
-        <div className="w-full relative px-5">
+        <div className="w-full relative ">
             <div className=" flex font-semibold -mx-2">
                 {weeklyWeather.length > 0 &&
                     weeklyWeather.map((weather, index) => (

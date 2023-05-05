@@ -5,7 +5,6 @@ const Input = ({
     value,
     onChange,
     placeholder,
-    key,
     alert,
     className = "",
 }) => {
@@ -28,7 +27,7 @@ const Input = ({
         }
     };
     return (
-        <div className={`relative mb-8  ${className}`} key={key}>
+        <div className={`relative mb-8  ${className}`} >
             <input
                 id={name}
                 placeholder=" "

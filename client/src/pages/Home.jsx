@@ -7,7 +7,8 @@ function Home() {
     const {
         authState: { isAuthenticated },
     } = useContext(AuthContext);
-    if (isAuthenticated) return <Navigate to="/landing" />;
+    if (isAuthenticated || window.innerWidth > 992)
+        return <Navigate to="/landing" />;
     return (
         <>
             <div className="w-full h-screen home relative dark:text-white text-black ">

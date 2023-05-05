@@ -1,58 +1,115 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { WeatherContext } from "../../contexts/WeatherContext";
-import moment from "moment-timezone";
-
+// import moment from "moment-timezone";
+import history from "../../routes/history";
+import { ChevronDownIcon } from "../icons";
 const ShowHistoryButton = () => {
     const {
-        getHistoryWeather,
+        weatherState: { historyWeather, weatherData },
+        // getHistoryWeather,
+        getHistoryWeather2_5,
         setHistoryWeather,
-        weatherState: {
-            historyWeather,
-            weatherData: {
+    } = useContext(WeatherContext);
+    // const handleShowHistory = async () => {
+    //     if (!historyWeather) {
+    //         const secondsOf7Days = 604800;
+    //         const date = moment
+    //             .unix(dt - secondsOf7Days)
+    //             .tz(timezone)
+    //             .format("yyyy-MM-DD");
+    //         await getHistoryWeather({ lat, lon, start: date, end: date });
+    //     } else {
+    //         setHistoryWeather(null);
+    //     }
+    // };
+    const handleGetHistoryWeather = async (e, { datetime, prop }) => {
+        // prevent double or more click
+        e.target.disabled = true;
+        setTimeout(() => {
+            e.target.disabled = false;
+        }, [5000]);
+        const {
+            lat,
+            lon,
+            timezone,
+            currentWeather: { dt },
+        } = weatherData;
+        if (e.target.checked) {
+            const history = await getHistoryWeather2_5({
                 lat,
                 lon,
+                dt: dt - datetime,
                 timezone,
-                currentWeather: { dt },
-            },
-        },
-    } = useContext(WeatherContext);
-    const handleShowHistory = async () => {
-        if (!historyWeather) {
-            const secondsOf7Days = 604800;
-            const date = moment
-                .unix(dt - secondsOf7Days)
-                .tz(timezone)
-                .format("yyyy-MM-DD");
-            await getHistoryWeather({ lat, lon, start: date, end: date });
+                datetime,
+            });
+            setHistoryWeather({ ...historyWeather, [`${prop}`]: history });
         } else {
-            setHistoryWeather(null);
+            // unset
+            setHistoryWeather({ ...historyWeather, [`${prop}`]: null });
         }
     };
-    // const handleShowToast = (e) => {
-    //     const toast = e.target.parentNode.querySelector(".toast");
-    //     toast.classList.add("show");
-    // };
-    // const handleClearToast = (e) => {
-    //     const toast = e.target.parentNode.querySelector(".toast");
-    //     toast.classList.remove("show");
-    // };
+    const handleClearAllHistoryWeather = () => {
+        // reset
+        setHistoryWeather({
+            history1_day: null,
+            history3_day: null,
+            history5_day: null,
+            history7_day: null,
+        });
+    };
+    useEffect(() => {
+        console.log("historyWeather", historyWeather);
+    }, [historyWeather]);
+    useEffect(() => {
+        handleClearAllHistoryWeather();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [weatherData]);
     return (
-        <div className="relative ">
-            <button
-                className={`px-3 py-2  button center ${
-                    historyWeather ? "activeButton" : ""
-                } `}
-                onClick={handleShowHistory}
-                // onMouseEnter={handleShowToast}
-                // onMouseLeave={handleClearToast}
-            >
+        <div className="relative history group">
+            <h3 className="center gap-2 font-semibold px-3 py-2 shadow-md">
                 History
-            </button>
-            {/* <div className="absolute hidden top-full right-0  toast z-[50] toast-before">
-                <div className="theme px-2 py-1 font-semibold min-w-[120px] ">
-                    {historyWeather ? "Clear " : "show "}History
+                <span className="">
+                    <ChevronDownIcon width="20px" height="20px" />
+                </span>
+            </h3>
+            <div className="absolute theme hidden group-hover:block top-[90%]  right-0 min-w-[140px] z-[99999]">
+                <div className="p-2">
+                    {history.map((item, index) => {
+                        const { title, prop, datetime } = item;
+                        return (
+                            <div key={index} className="between px-2 py-1 ">
+                                <input
+                                    type="checkbox"
+                                    id={title}
+                                    onChange={(e) =>
+                                        handleGetHistoryWeather(e, {
+                                            datetime,
+                                            prop,
+                                        })
+                                    }
+                                    checked={
+                                        historyWeather[prop] ? true : false
+                                    }
+                                />
+                                <label
+                                    htmlFor={title}
+                                    className="font-semibold capitalize hover:cursor-pointer"
+                                >
+                                    {title}
+                                </label>
+                            </div>
+                        );
+                    })}
+                    <div className="mt-1 border-t px-2 py-1">
+                        <button
+                            onClick={handleClearAllHistoryWeather}
+                            className="w-full text-center"
+                        >
+                            Clear all
+                        </button>
+                    </div>
                 </div>
-            </div> */}
+            </div>
         </div>
     );
 };

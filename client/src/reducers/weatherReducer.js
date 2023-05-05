@@ -66,7 +66,7 @@ export const weatherReducer = (state, action) => {
                 ...state,
                 weatherData: payload,
                 isLoading: false,
-                historyWeather: null,
+                compare: [{ ...payload }],
             };
         case SET_FORECAST_WEATHER:
             return {

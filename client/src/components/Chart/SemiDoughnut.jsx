@@ -4,15 +4,15 @@ import { Doughnut } from "react-chartjs-2";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-const SemiDoughnut = ({ name, percen, onClick }) => {
+const SemiDoughnut = ({ name, percen, onClick, message = "",className="" }) => {
     return (
-        <div className="p-2">
-            <div className="flex justify-center">
+        <div className={className}>
+            <div className="center">
                 <button className="button capitalize" onClick={onClick}>
                     {name}
                 </button>
             </div>
-            <div className="relative px-4 ">
+            <div className="relative px-4 my-4">
                 <div className="absolute top-[50%] left-1/2 -translate-x-1/2 -translate-y-1/2">
                     <h2>{percen}%</h2>
                 </div>
@@ -40,6 +40,7 @@ const SemiDoughnut = ({ name, percen, onClick }) => {
                     }}
                 />
             </div>
+            <h3 className="font-semibold capitalize text-center">{message}</h3>
         </div>
     );
 };

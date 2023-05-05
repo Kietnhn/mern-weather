@@ -6,7 +6,7 @@ import { Line } from "react-chartjs-2";
 import moment from "moment-timezone";
 import useDarkMode from "../../hooks/useDarkMode";
 import setTempByTime from "../../utils/setTempByTime";
-import AlertLimitedAPI from "../AlertLimitedAPI";
+import Alert from "../Alert";
 const CompareChart = ({ weatherType = "hourlyWeather", isAlert = false }) => {
     const {
         weatherState: {
@@ -132,7 +132,7 @@ const CompareChart = ({ weatherType = "hourlyWeather", isAlert = false }) => {
                     width="100%"
                 />
             )}
-            {isAlert && <AlertLimitedAPI />}
+            {isAlert && <Alert />}
         </>
     );
 };

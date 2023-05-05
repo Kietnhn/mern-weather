@@ -9,7 +9,7 @@ const User = () => {
     } = useContext(AuthContext);
     const [isShowMenu, setIsShowMenu] = useState(false);
     return (
-        <div>
+        <div className="h-full flex justify-end items-center">
             {isAuthenticated ? (
                 <div
                     className="relative hover:cursor-pointer flex items-center gap-4"
@@ -46,20 +46,12 @@ const User = () => {
                     )}
                 </div>
             ) : (
-                <div className="flex items-center gap-4 font-semibold">
-                    <NavLink
-                        to="/register"
-                        className="border px-4 py-2 rounded-lg bg-transparent border-primaryText text-primaryText"
-                    >
-                        Sign up
-                    </NavLink>
-                    <NavLink
-                        to="/login"
-                        className="border px-4 py-2 rounded-lg bg-primaryText text-dark"
-                    >
-                        Sign in
-                    </NavLink>
-                </div>
+                <NavLink
+                    to="/login"
+                    className="border px-4 py-2 rounded-lg bg-primaryText text-dark"
+                >
+                    Sign in
+                </NavLink>
             )}
         </div>
     );

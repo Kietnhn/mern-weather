@@ -7,6 +7,9 @@
     margin: 0;
     box-sizing: border-box;
 }
+body {
+    scroll-behavior: smooth;
+}
 .leaflet-control-attribution {
     display: none !important;
 }
@@ -50,11 +53,61 @@
     }
 }
 @layer components {
+    .theme {
+        @apply bg-[white] text-[black] dark:text-[white] dark:bg-dark shadow-lg dark:shadow-[rgba(255,255,255,.1)];
+    }
+    .theme-reverse {
+        @apply dark:bg-[white] dark:text-[black] text-[white] bg-dark dark:shadow-lg shadow-[rgba(255,255,255,.1)];
+    }
+    .text-theme{
+        @apply text-[black] dark:text-[white];
+    }
+    .center {
+        @apply flex items-center justify-center;
+    }
+    .between {
+        @apply flex items-center justify-between;
+    }
+    .bg-image {
+        @apply bg-no-repeat bg-cover bg-center;
+    }
+    .button-reverse {
+        @apply px-4 py-2 rounded-md border duration-150 dark:hover:bg-dark dark:hover:text-[white] dark:hover:border-[white] dark:border-dark dark:text-dark dark:bg-[white]     bg-dark text-primaryText hover:bg-[white] hover:text-dark border-[white] hover:border-dark hover:cursor-pointer;
+    }
+    .button {
+        @apply px-4 py-2 rounded-md border duration-150 hover:bg-dark hover:text-[white] border-dark text-dark bg-[white]     dark:bg-dark dark:text-primaryText dark:hover:bg-[white] dark:hover:text-dark dark:border-[white] hover:cursor-pointer;
+    }
+    .activeButton {
+        @apply bg-dark text-primaryText dark:bg-primaryText dark:text-dark;
+    }
+    .title {
+        background: -webkit-linear-gradient(#8ae4f9, #8d8c95);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+    .icon {
+        width: 36px;
+        height: 36px;
+    }
+    .absolute-center {
+        @apply absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2;
+    }
     input,
     textarea {
         outline: none;
     }
+    /* navtoday */
+    .navtoday {
+        /* width: 40px; */
+        transition: all ease-in 0.25s;
+    }
 
+    .navtoday:hover p {
+        display: block;
+    }
+    .navtoday p {
+        display: none;
+    }
     /* input */
 
     .form-input {
@@ -90,25 +143,18 @@
     .tooltip:hover .tooltip-message {
         @apply block;
     }
-    .tooltip:hover .tooltip-message:after {
+    .tooltip:hover .arrow {
         @apply block;
     }
     .tooltip-message {
-        @apply hidden absolute py-1 top-[calc(-100%-4px)] left-1/2 -translate-x-1/2 min-w-[100px] text-center font-semibold rounded-lg theme shadow-lg;
+        @apply hidden absolute py-1  min-w-[100px] text-center font-semibold rounded-lg theme shadow-[0_0_18px_2px_#ccc];
     }
-    .tooltip-message:after {
+    .arrow {
         display: none;
-        content: " ";
         position: absolute;
-        top: 100%;
-        left: 50%;
-        transform: translateX(-50%);
         border-width: 10px;
-        border-color: white transparent transparent transparent;
     }
-    .dark .tooltip-message:after {
-        border-color: black transparent transparent transparent;
-    }
+
     /* toast */
     .toast-before::before {
         content: " ";
@@ -118,39 +164,7 @@
         border-width: 8px;
         border-color: transparent transparent white transparent;
     }
-    .theme {
-        @apply bg-[white] text-[black] dark:text-[white] dark:bg-dark shadow-lg dark:shadow-[rgba(255,255,255,.1)];
-    }
-    .theme-reverse {
-        @apply dark:bg-[white] dark:text-[black] text-[white] bg-dark dark:shadow-lg shadow-[rgba(255,255,255,.1)];
-    }
-    .center {
-        @apply flex items-center justify-center;
-    }
-    .between {
-        @apply flex items-center justify-between;
-    }
-    .bg-image {
-        @apply bg-no-repeat bg-cover bg-center;
-    }
-    .button-reverse {
-        @apply px-4 py-2 rounded-md border duration-150 dark:hover:bg-dark dark:hover:text-[white] dark:hover:border-[white] dark:border-dark dark:text-dark dark:bg-[white]     bg-dark text-primaryText hover:bg-[white] hover:text-dark border-[white] hover:border-dark hover:cursor-pointer;
-    }
-    .button {
-        @apply px-4 py-2 rounded-md border duration-150 hover:bg-dark hover:text-[white] border-dark text-dark bg-[white]     dark:bg-dark dark:text-primaryText dark:hover:bg-[white] dark:hover:text-dark dark:border-[white] hover:cursor-pointer;
-    }
-    .activeButton {
-        @apply bg-dark text-primaryText dark:bg-primaryText dark:text-dark;
-    }
-    .title {
-        background: -webkit-linear-gradient(#8ae4f9, #8d8c95);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-    }
-    .icon {
-        width: 36px;
-        height: 36px;
-    }
+
     /* nav */
     .navlink {
         @apply flex items-center justify-center flex-col;

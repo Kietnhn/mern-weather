@@ -12,13 +12,40 @@ router.get("/", async (req, res) => {
         });
     try {
         const response = await fetch(
-            `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&appid=${process.env.API_KEY}&exclude=minutely&units=metric`
+            `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&appid=${process.env.API_KEY}&units=metric`
         ).then((res) => res.json());
         res.json({ success: true, message: "Success", weather: response });
     } catch (error) {
         console.log(error);
     }
 });
+// api/weather/history/2.5
+router.get("/history/2.5", async (req, res) => {
+    const { lat, lon, dt } = req.query;
+    if (!lat || !lon)
+        return res.status(400).json({
+            success: false,
+            message: "latitude and longtude is required",
+        });
+    if (!dt)
+        return res.status(400).json({
+            success: false,
+            message: "time is required",
+        });
+    try {
+        const response = await fetch(
+            `https://api.openweathermap.org/data/2.5/onecall/timemachine?lat=${lat}&lon=${lon}&dt=${dt}&appid=${process.env.API_KEY}&units=metric`
+        ).then((res) => res.json());
+        res.json({
+            success: true,
+            message: "Success",
+            weather: response.hourly,
+        });
+    } catch (error) {
+        console.log(error);
+    }
+});
+
 // /api/weather/history
 router.get("/history", async (req, res) => {
     const { lat, lon, start, end, type } = req.query;

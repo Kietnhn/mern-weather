@@ -14,7 +14,8 @@ const CitiesWeather = ({ isEdit, className }) => {
         deleteCity,
     } = useContext(CityContext);
     const {
-        getCurrentWeather,
+        getCompareWeatherData,
+        getWeatherData,
         weatherState: { isCompare, compare },
     } = useContext(WeatherContext);
     const {
@@ -28,19 +29,23 @@ const CitiesWeather = ({ isEdit, className }) => {
             setData(cities);
         }
     }, [cities, isAuthenticated]);
-    const hanldeSelectWeather = async (weather) => {
+    const handleAddCompare = async (weather) => {
         if (!isEdit) {
             const { lat, lon } = weather;
             const existedCity = compare.find(
                 (city) => city.lat === lat && city.lon === lon
             );
             if (!existedCity) {
-                await getCurrentWeather({ lat, lon, isCompare });
+                await getCompareWeatherData({ lat, lon });
                 if (!isCompare) {
                     navigate("/today");
                 }
             }
         }
+    };
+    const handleSelectCity = async (weather) => {
+        const { lat, lon } = weather;
+        await getWeatherData({ lat, lon });
     };
     const handleDeleteCity = async (weather) => {
         if (isAuthenticated) {
@@ -52,7 +57,7 @@ const CitiesWeather = ({ isEdit, className }) => {
     const CityWeather = ({ weather }) => {
         return (
             <div
-                onClick={() => hanldeSelectWeather(weather)}
+                onClick={() => handleSelectCity(weather)}
                 className={`w-full between overflow-hidden  rounded-2xl  
                         ${
                             weather?.weather.imgUrl
@@ -97,7 +102,7 @@ const CitiesWeather = ({ isEdit, className }) => {
     };
     if (!data) return <></>;
     return (
-        <div>
+        <div className="flex flex-col justify-between h-full">
             {alert && (
                 <div className={`"fixed inset-0 bg-[rgba(0,0,0,.4)] z-[50]"`}>
                     <div className="bg-primaryText text-center text-dark p-6 rounded-2xl absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
@@ -119,10 +124,18 @@ const CitiesWeather = ({ isEdit, className }) => {
                     </div>
                 </div>
             )}
-            {data.length > 0 && (
-                <div>
+            {!isAuthenticated ? (
+                <div className="flex-1">
+                    <div className="relative h-full">
+                        <div className="absolute-center">
+                            <h2>Sign in to view your positions</h2>
+                        </div>
+                    </div>
+                </div>
+            ) : data.length > 0 ? (
+                <div className="flex-1">
                     <h3 className="font-semibold text-xl">My Positions</h3>
-                    <div className="h-[50vh] overflow-auto">
+                    <div className="h-full overflow-auto">
                         {data.map((weather) => (
                             <div
                                 key={`${
@@ -132,6 +145,14 @@ const CitiesWeather = ({ isEdit, className }) => {
                                 <CityWeather weather={weather} />
                             </div>
                         ))}
+                    </div>
+                </div>
+            ) : (
+                <div className="flex-1">
+                    <div className="relative">
+                        <div className="absolute-center">
+                            <h2>Add new position</h2>
+                        </div>
                     </div>
                 </div>
             )}

@@ -52,14 +52,15 @@ const FormContact = () => {
                     </div>
                 ) : (
                     ["name", "email"].map((item, index) => (
-                        <Input
-                            alert={alert}
-                            key={`${item} ${index}`}
-                            name={item}
-                            value={inputs[item]}
-                            onChange={(e) => handleChangeInput(e)}
-                            placeholder={item}
-                        />
+                        <div key={index}>
+                            <Input
+                                alert={alert}
+                                name={item}
+                                value={inputs[item]}
+                                onChange={(e) => handleChangeInput(e)}
+                                placeholder={item}
+                            />
+                        </div>
                     ))
                 )}
                 <TextArea

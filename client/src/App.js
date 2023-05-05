@@ -13,8 +13,11 @@ import {
     Login,
     Register,
     City,
+    Comparative,
 } from "./pages";
 import CityContextProvider from "./contexts/CityContext";
+import IntervalServerError from "./pages/IntervalServerError";
+import PageNotFound from "./pages/PageNotFound";
 
 function App() {
     return (
@@ -68,6 +71,22 @@ function App() {
                                         <Route
                                             path="/my-city"
                                             element={<City />}
+                                        />
+                                        <Route
+                                            path="/server-error"
+                                            element={<IntervalServerError />}
+                                        />
+                                        <Route
+                                            path="/comparative"
+                                            element={
+                                                <MainLayout>
+                                                    <Comparative />
+                                                </MainLayout>
+                                            }
+                                        />
+                                        <Route
+                                            path="*"
+                                            element={<PageNotFound />}
                                         />
                                     </Routes>
                                 </Router>

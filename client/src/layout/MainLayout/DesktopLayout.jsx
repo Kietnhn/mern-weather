@@ -1,18 +1,37 @@
 import React from "react";
 import DesktopHeader from "../../views/Desktop/DesktopHeader";
-import Navigation from "../../views/Desktop/Navigation";
-import Theme from "../../components/Theme/Theme";
-
+import Cities from "../../views/Desktop/Cities";
+import { useEffect } from "react";
 const DesktopLayout = ({ children }) => {
+    useEffect(() => {
+        window.addEventListener("scroll", () => {
+            const top =
+                window.pageYOffset || document.documentElement.scrollTop;
+            const left =
+                window.pageXOffset || document.documentElement.scrollLeft;
+            window.scrollTo(left, top);
+        });
+        return () =>
+            window.removeEventListener("scroll", () => {
+                const top =
+                    window.pageYOffset || document.documentElement.scrollTop;
+                const left =
+                    window.pageXOffset || document.documentElement.scrollLeft;
+                window.scrollTo(left, top);
+            });
+    }, []);
     return (
         <>
             <DesktopHeader />
-            <Navigation />
-            <Theme className="fixed right-0 top-16 z-[9999]" />
-            <div className="fixed top-1/2 -translate-y-1/2 right-0 z-[9999]">
-                <div className="rotate-[90deg] ">My Cities</div>
+
+            <Cities />
+
+            <div
+                className={`theme h-[100vh] overflow-hidden`}
+                style={{ scrollBehavior: "smooth" }}
+            >
+                {children}
             </div>
-            <div className={`pt-[52px] theme`}>{children}</div>
         </>
     );
 };

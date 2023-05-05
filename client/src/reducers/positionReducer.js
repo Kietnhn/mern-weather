@@ -22,6 +22,7 @@ export const positionReducer = (state, action) => {
             return {
                 ...state,
                 currentPosition: payload,
+                isLoading: false,
             };
         default:
             return state;

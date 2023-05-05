@@ -1,7 +1,7 @@
 import moment from "moment-timezone";
 import React, { useContext, useState } from "react";
-import { WeatherContext } from "../../../../contexts/WeatherContext";
-import { AirContext } from "../../../../contexts/AirContext";
+import { WeatherContext } from "../../../contexts/WeatherContext";
+import { AirContext } from "../../../contexts/AirContext";
 
 const DateForm = () => {
     const {
@@ -32,16 +32,12 @@ const DateForm = () => {
         const { start, end } = inputs;
         if (start && end) {
             const start = new Date(inputs.start);
-           
+
             const end = new Date(inputs.end);
             start.setHours(0, 0, 0);
             end.setHours(0, 0, 0);
-            const startUTC = Math.floor(
-                start.getTime() / 1000
-            );
-            const endUTC = Math.floor(
-                end.getTime() / 1000
-            );
+            const startUTC = Math.floor(start.getTime() / 1000);
+            const endUTC = Math.floor(end.getTime() / 1000);
             console.log({ start: startUTC, end: endUTC });
             await getHistoryAirPollution({
                 start: startUTC,
@@ -53,10 +49,8 @@ const DateForm = () => {
     };
     return (
         <div className="w-full between -mx-3">
-            {[
-                ...Object.keys(inputs)
-            ].map((input) => (
-                <div className="w-2/5 px-3" key={input}>
+            {[...Object.keys(inputs)].map((input, index) => (
+                <div className="w-2/5 px-3" key={index}>
                     <div className="relative">
                         <input
                             className="w-full py-2 px-3 text-[black]"

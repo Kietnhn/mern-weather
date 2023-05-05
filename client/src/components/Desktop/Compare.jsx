@@ -8,7 +8,7 @@ const Compare = () => {
     } = useContext(WeatherContext);
     const handleRemoveCompare = (index) => {
         if (compare.length > 1) {
-            const deletedCompare = compare.filter((weather, i) => i !== index);
+            const deletedCompare = compare.filter((_, i) => i !== index);
             setCompare(deletedCompare);
         }
     };
@@ -16,7 +16,7 @@ const Compare = () => {
         <div>
             <h2 className="text-2xl font-semibold mb-2">Comparing: </h2>
             <div className="flex gap-2 w-full flex-wrap">
-                {compare.map((weather, index) => (
+                {compare?.map((weather, index) => (
                     <div
                         className="relative button font-semibold"
                         key={`compare ${weather.timezone}`}

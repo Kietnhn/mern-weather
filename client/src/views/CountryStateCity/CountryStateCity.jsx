@@ -7,14 +7,14 @@ import filterListByName from "../../utils/filterListByName";
 const CountryStateCity = ({ position }) => {
     const [positions, setPositions] = useState(null);
     const [showMoreInfo, setShowMoreInfo] = useState("");
-    const { getCurrentWeather, setCompare } = useContext(WeatherContext);
+    const { getWeatherData, setCompare } = useContext(WeatherContext);
 
     const navigate = useNavigate();
 
     const handleSelectPosition = async ({ latitude, longitude }) => {
         const lat = latitude;
         const lon = longitude;
-        const weatherData = await getCurrentWeather({ lat, lon });
+        const weatherData = await getWeatherData({ lat, lon });
         setCompare([{ ...weatherData }]);
         navigate("/today");
     };
